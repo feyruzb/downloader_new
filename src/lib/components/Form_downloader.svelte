@@ -3,12 +3,14 @@
 
 	let url = '',
 		formatSelect = '',
-		resolutionOptions = '';
+		resolutionOptions = '',
+		error = false;
 
 	function submit(event) {
 		// event.preventDefault();
-		alert.style.display = validator() ? 'none' : 'block';
+		error = !validator();
 		validator() ? form.submit() : '';
+
         
 	}
 
@@ -17,12 +19,16 @@
 		if (formatSelect == 'MP4') status = status && resolutionOptions.includes('p');
 		return status;
 	}
+
+	
+
 </script>
 
 <form id="form" class="w-50 m-auto">
 	<div class="input-group mb-3 m-auto">
 		<span class="input-group-text" id="inputGroup-sizing-default">URL</span>
 		<input
+			placeholder="URL HERE"
 			bind:value={url}
 			id="url"
 			type="text"
@@ -59,8 +65,10 @@
 			<option value="720p">720p</option>
 		</select>
 	</div>
-	<button id="download" class="btn btn-success" on:click={submit}>Download</button>
-	<div id="alert" class="alert alert-danger" style="display: none;" role="alert">
+	<div class="w-100 m-auto"> 
+	<button id="download" class="btn btn-success m-auto d-block " on:click={submit}>Download</button>
+	</div>
+	<div id="alert" class="alert alert-danger" style={"display: " + (!error ? "none" : "block")} role="alert"> 
 		A simple danger alert—check it out!
 	</div>
 </form>
