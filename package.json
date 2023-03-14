@@ -23,6 +23,8 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"youtube-dl": "^3.4.1",
+		"youtube-dl-exec": "^2.4.0",
 		"ytdl-core": "^4.11.2"
 	}
 }

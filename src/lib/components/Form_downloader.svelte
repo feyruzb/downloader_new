@@ -1,27 +1,38 @@
 <script>
-	// @ts-nocheck
+	let url = '';
+	let formatSelect = '';
+	let resolutionOptions = '';
+	let error = false;
+	let downloading = false;
 
-	let url = '',
-		formatSelect = '',
-		resolutionOptions = '',
-		error = false;
-
+	// @ts-ignore
 	function submit(event) {
-		// event.preventDefault();
+		event.preventDefault();
 		error = !validator();
-		validator() ? form.submit() : '';
-
-        
+		if (validator()) {
+			const params = new URLSearchParams();
+			params.append('url', url);
+			params.append('res', resolutionOptions);
+			fetch("/downloader/api?" + params.toString())
+				.then((response) => response.blob())
+				.then(blob => {
+					const url = window.URL.createObjectURL(blob);
+					const a = document.createElement('a');
+					a.href = url;
+					a.download = `file.${formatSelect.toLowerCase()}`
+					document.body.appendChild(a);
+					a.click();
+				})
+		}
 	}
 
 	function validator() {
 		let status = url.includes('http') && ['MP3', 'MP4'].includes(formatSelect);
-		if (formatSelect == 'MP4') status = status && resolutionOptions.includes('p');
+		if (formatSelect == 'MP4') {
+			status = status && resolutionOptions.includes('p');
+		}
 		return status;
 	}
-
-	
-
 </script>
 
 <form id="form" class="w-50 m-auto">
@@ -65,10 +76,16 @@
 			<option value="720p">720p</option>
 		</select>
 	</div>
-	<div class="w-100 m-auto"> 
-	<button id="download" class="btn btn-success m-auto d-block " on:click={submit}>Download</button>
+	<div class="w-100 m-auto">
+		<button id="download" class="btn btn-success m-auto d-block " on:click={submit}>Download</button
+		>
 	</div>
-	<div id="alert" class="alert alert-danger" style={"display: " + (!error ? "none" : "block")} role="alert"> 
+	<div
+		id="alert"
+		class="alert alert-danger"
+		style={'display: ' + (!error ? 'none' : 'block')}
+		role="alert"
+	>
 		A simple danger alert—check it out!
 	</div>
 </form>
