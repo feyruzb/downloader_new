@@ -12,17 +12,18 @@
 		if (validator()) {
 			const params = new URLSearchParams();
 			params.append('url', url);
+      params.append('format', formatSelect);
 			params.append('res', resolutionOptions);
-			fetch("/downloader/api?" + params.toString())
+			fetch('/downloader/api?' + params.toString())
 				.then((response) => response.blob())
-				.then(blob => {
+				.then((blob) => {
 					const url = window.URL.createObjectURL(blob);
 					const a = document.createElement('a');
 					a.href = url;
-					a.download = `file.${formatSelect.toLowerCase()}`
+					a.download = `file.${formatSelect.toLowerCase()}`;
 					document.body.appendChild(a);
 					a.click();
-				})
+				});
 		}
 	}
 
